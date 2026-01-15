@@ -33,11 +33,14 @@ creating two different storage objects with two different type specialisations:
    ```
    + What are the reasons for using generics here?
    
-     ** YOUR ANSWER HERE **
+     To be able to use the same treatment for 2 different objects
    
    + What are the benefits?
    
-     ** YOUR ANSWER HERE **
+     The principle of write once and then implement multiple times! 
+     And more specifically we can use the same implementation with the different types
+     bankAccountStorage.empty()
+     stringStorage.empty()
 
 Add the following code to your `Example1` class:
 
@@ -49,10 +52,14 @@ Add the following code to your `Example1` class:
    account1.deposit(15);
    ```
    + Compile and analyse the compiler output.
+      + java: incompatible types: java.lang.Object cannot be converted to BankAccount
+        The generic has explicitly set the type that bankAccountStorage can accept as
+        BankAccount. But the reference type of account is Object and Java will not explicitly downcast
    
    + What is the cause of the problems reported by the compiler, if any?
    
      ** YOUR ANSWER HERE **
+     + I'm not sure what i required here
 
 Now replace:
 
@@ -65,11 +72,16 @@ Now replace:
    ```
    + How does this affect the compilation process?
    
-     ** YOUR ANSWER HERE **
+     - java: cannot find symbol
+       symbol:   method deposit(int)
+       location: variable account1 of type java.lang.Object
+     - It passed the previous line and raises and error for the method deposit
+     
    
    + What is the problem, if any?
-   
-     ** YOUR ANSWER HERE **
+
+       - Deposit is not a method of ~~storage~~ Object
+       - Fix by using `((BankAccount) account1).deposit(15);` instead of `account1.deposit(15);`
    
 Now replace 
 
@@ -85,7 +97,7 @@ with
 
    + Does it still compile?
 
-     ** YOUR ANSWER HERE **
+     Yes the empty brace <> infers the type from the generic reference type on the left
 
 Finally, replace
 
@@ -101,11 +113,17 @@ with
 
    + Does it still compile? If not, explain why.
 
-     ** YOUR ANSWER HERE **
+     Yes var in this case is inferring that Storage<>() uses Object 
+        as it's bound type
+     Due to the phrasing of the next question, I have replaced the previous casting to
+     `BankAccount account1 = bankAccountStorage.getItem();`
+     java: incompatible types: java.lang.Object cannot be converted to BankAccount
 
    + How would you fix the error?
 
-     ** YOUR ANSWER HERE **
+     I need to be more specific here about the concrete type in `bankAccountStorage` to pair with 
+      the use of inference in the reference 
+      var bankAccountStorage = new Storage<BankAccount>();
 
 
 2. In Java, arrays are **covariant**, which means that an array of type `T1[]` can be used in a context where 
